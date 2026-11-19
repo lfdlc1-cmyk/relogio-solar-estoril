@@ -126,13 +126,13 @@ const skyPhotos={
 let currentSky='',frontSky='a';
 const skyPreload={};
 Object.keys(skyPhotos).forEach(k=>{const img=new Image();img.src=skyPhotos[k];skyPreload[k]=img;});
-function updateSky(now,s){
- const minute=now.getHours()*60+now.getMinutes(),rise=s.rise,set=s.set;
+function updateSky(now,s,pos){
+ const altitude=pos.alt,azimuth=pos.az;
  let stage;
- // As transições seguem o nascer e o pôr do sol calculados para a localização.
- if(minute<rise-55 || minute>=set+65) stage='night';
- else if(minute<rise+75) stage='dawn';
- else if(minute>=set-100) stage='sunset';
+ // Cenário escolhido pela altura real do Sol, não por horas fixas.
+ // Azimute distingue manhã (Sol a Este) de fim de tarde (Sol a Oeste).
+ if(altitude < -6) stage='night';
+ else if(altitude < 8) stage=azimuth>=180?'sunset':'dawn';
  else stage='day';
  if(stage===currentSky)return;
  const next=frontSky==='a'?'b':'a';
@@ -152,7 +152,7 @@ function updateSky(now,s){
 
 function update(){
  const now=new Date(),s=solar(now),pos=solarPosition(now),mins=now.getHours()*60+now.getMinutes(),len=s.set-s.rise,elapsed=Math.max(0,Math.min(len,mins-s.rise)),pct=len>0?elapsed/len:0;
- updateSky(now,s);
+ updateSky(now,s,pos);
  const sun=$('photo-sun');
  if(sun){
   const visible=pos.alt>-4;
