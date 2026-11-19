@@ -2,105 +2,159 @@
 <html lang="pt-PT">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05080d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Relógio Solar">
+<meta name="apple-mobile-web-app-title" content="Relógio Solar PRO">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" sizes="180x180" href="/relogio-solar-estoril/apple-touch-icon.png?v=2">
-<title>Relógio Solar</title>
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=2">
+<title>Relógio Solar PRO</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif}
-body{display:flex;align-items:center;justify-content:center;min-height:100svh;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom)}
-main{width:min(100%,440px);display:flex;flex-direction:column;align-items:center}
-svg{width:100%;height:auto;display:block}
-.status{width:86%;display:flex;justify-content:space-between;color:#aaa;font-size:10px;letter-spacing:1.2px;margin-top:3px}
-.place{font-size:11px;letter-spacing:1.5px;color:#999;margin-top:13px}
-
+:root{color-scheme:dark;--gold:#ffd21c;--orange:#ff9d19;--muted:#aeb5c0;--panel:rgba(17,23,31,.88);--line:rgba(255,255,255,.13)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#03060a;color:#f7f8fb;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);background:radial-gradient(ellipse at 50% 53%,#17202c 0,#080d14 42%,#020407 78%);min-height:100svh}
+button{font:inherit;color:inherit} .app{width:min(100%,520px);margin:0 auto;min-height:100svh;padding:16px 16px 90px}
+header{display:flex;align-items:center;justify-content:space-between;padding:8px 4px 15px}
+.brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:600;letter-spacing:-.5px}.brand-mark{color:var(--gold);font-size:30px;line-height:1}
+.header-actions{display:flex;gap:18px}.icon-btn{border:0;background:none;font-size:24px;padding:4px;color:#e9edf4}
+.location{color:#c3cad5;font-size:13px;margin:0 0 8px 38px;display:flex;align-items:center;gap:6px}
+.hero{position:relative;height:clamp(365px,104vw,500px);max-height:500px;overflow:hidden;border-radius:24px;margin:0 -3px 14px;background:linear-gradient(180deg,#0a111b 0%,#172130 37%,#553d36 63%,#f18b32 78%,#0c1722 91%,#02060a 100%)}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 76%,rgba(255,174,65,.95) 0,rgba(255,119,35,.35) 18%,transparent 42%),linear-gradient(180deg,transparent 65%,rgba(0,0,0,.6) 100%)}
+.hero:after{content:"";position:absolute;left:-5%;right:-5%;bottom:0;height:24%;background:linear-gradient(155deg,transparent 0 20%,#05090e 21% 42%,transparent 43%),linear-gradient(20deg,#020509 0 34%,transparent 35%);opacity:.9}
+.sun-disc{position:absolute;left:50%;bottom:19%;width:12px;height:12px;transform:translateX(-50%);border-radius:50%;background:#ffe37a;box-shadow:0 0 20px 8px #ff9c35}
+.compass{position:absolute;inset:7% 7% 8%;z-index:1}
+.compass svg{width:100%;height:100%;overflow:visible}
+.compass-label{position:absolute;font-size:15px;font-weight:600;color:#f1f2f5;text-shadow:0 1px 4px #000}.north{top:1%;left:50%;transform:translateX(-50%)}.east{right:1%;top:49%}.south{bottom:0;left:50%;transform:translateX(-50%)}.west{left:1%;top:49%}
+.center-info{position:absolute;z-index:2;top:29%;left:0;right:0;text-align:center;text-shadow:0 2px 8px #111}.time{font-size:clamp(55px,15vw,82px);font-weight:300;letter-spacing:-3px;line-height:1.12;font-variant-numeric:tabular-nums}.date{font-size:18px;margin-top:5px}.sun-times{display:flex;justify-content:center;align-items:center;margin-top:24px;gap:27px}.sun-time{min-width:90px}.sun-time .sun-icon{font-size:29px;color:var(--gold);line-height:1.1}.sun-time:last-child .sun-icon{color:var(--orange)}.sun-time strong{display:block;font-size:27px;font-weight:300;margin-top:7px}.sun-divider{height:56px;width:1px;background:#d5d9df}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat,.daylight,.moon-card,.content-card{background:linear-gradient(145deg,rgba(31,39,49,.92),rgba(8,13,19,.95));border:1px solid var(--line);border-radius:17px;box-shadow:0 8px 22px #0005}
+.stat{text-align:center;padding:12px 5px 13px}.stat .ico{font-size:22px;color:var(--gold)}.stat small{display:block;color:#d7dbe2;font-size:12px;margin:4px 0 5px}.stat strong{font-size:22px;font-weight:500;font-variant-numeric:tabular-nums}
+.daylight{margin-top:12px;padding:14px 16px}.daylight-top,.daylight-bottom{display:flex;justify-content:space-between;align-items:center}.daylight-top strong{font-size:16px}.daylight-top span{font-weight:600;font-size:17px}.bar{height:15px;border-radius:20px;background:#343d49;margin:12px 0 8px;overflow:hidden}.bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffbd00,#ffda35);border-radius:20px;transition:width .4s}.daylight-bottom{color:#b9c1cc;font-size:12px}
+.moon-card{margin-top:12px;padding:12px;display:flex;align-items:center;gap:13px}.moon-art{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#5e6c7c,#0a1018 68%);font-size:37px}.moon-copy{flex:1}.moon-copy strong{display:block;font-size:16px}.moon-copy span{display:block;color:#d1d6de;font-size:13px;margin-top:5px}.chevron{color:#8993a1;font-size:25px}
+nav{position:fixed;z-index:10;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);padding:9px 9px calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);background:rgba(5,9,14,.96);border-top:1px solid #ffffff18;backdrop-filter:blur(18px)}
+nav button{border:0;background:none;color:#aeb6c2;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;padding:2px 0}nav button .navico{font-size:22px;line-height:1.1}nav button.active{color:var(--gold)}
+.page{display:none}.page.active{display:block}.page-title{font-size:25px;font-weight:600;margin:12px 3px 16px}.content-card{padding:16px;margin-bottom:12px}.content-card h3{margin:0 0 8px;font-size:16px}.muted{color:var(--muted)}.rowline{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.rowline:last-child{border:0}
+input,select{background:#101721;color:white;border:1px solid #394454;border-radius:10px;padding:10px;font:inherit;max-width:100%}.action{background:#202a36;border:1px solid #495566;border-radius:12px;padding:10px 14px}.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}.calendar-grid span{padding:9px 0;border-radius:9px;font-size:13px}.calendar-grid .today{background:#ffd21c;color:#101010;font-weight:700}.calendar-grid .chosen{outline:1px solid var(--gold)}
+.chart{height:150px;display:flex;align-items:end;gap:4px;padding:12px 0}.chart i{flex:1;background:linear-gradient(180deg,#ffdb39,#d88416);border-radius:5px 5px 0 0;min-width:4px}
+.compass-readout{height:230px;display:grid;place-items:center;background:radial-gradient(circle,#172536,#080d13 70%);border-radius:18px}.compass-readout svg{width:210px;height:210px}
+footer{height:12px}
+@media(min-width:480px){.app{padding-top:22px}.hero{height:480px}}
 </style>
 </head>
 <body>
-<main>
-<svg viewBox="0 0 400 400" role="img" aria-label="Relógio solar com localização automática">
-<defs>
- <linearGradient id="solarArc" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ffae00"/><stop offset="48%" stop-color="#ffd51b"/><stop offset="100%" stop-color="#555"/></linearGradient>
- <radialGradient id="sunGlow"><stop offset="0%" stop-color="#ffe74a" stop-opacity="1"/><stop offset="45%" stop-color="#ffb900" stop-opacity=".45"/><stop offset="100%" stop-color="#ffb900" stop-opacity="0"/></radialGradient>
- <filter id="glow"><feGaussianBlur stdDeviation="7"/></filter>
-</defs>
-<circle cx="200" cy="200" r="190" fill="#000" stroke="#777" stroke-width="1.5"/>
-<circle cx="200" cy="200" r="190" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="3"/>
-<path d="M200 20 A180 180 0 1 0 200 380" fill="none" stroke="#333" stroke-width="7" stroke-linecap="round"/>
-<path id="solar-progress" d="M200 20 A180 180 0 1 0 200 380" fill="none" stroke="url(#solarArc)" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="50 50"/>
-<circle id="sun-halo" cx="0" cy="0" r="28" fill="url(#sunGlow)" filter="url(#glow)"/>
-<circle id="sun-dot" cx="0" cy="0" r="7" fill="#ffe52b"/>
-<text id="clock-time" x="200" y="177" text-anchor="middle" fill="#fff" font-size="69" font-weight="300" letter-spacing="-2">--:--</text>
-<text id="clock-date" x="200" y="212" text-anchor="middle" fill="#fff" font-size="21" font-weight="300">---</text>
-<g transform="translate(128 258)" stroke="#ffdf00" fill="none" stroke-width="3">
- <path d="M-15 0 A15 15 0 0 1 15 0 M-23 5 H23 M0 -26 V-19 M-19 -19 L-14 -14 M19 -19 L14 -14"/>
-</g>
-<g transform="translate(272 258)" stroke="#ffae00" fill="none" stroke-width="3">
- <path d="M-15 0 A15 15 0 0 1 15 0 M-23 5 H23 M0 -26 V-19 M-19 -19 L-14 -14 M19 -19 L14 -14"/>
-</g>
-<text id="sunrise" x="128" y="302" text-anchor="middle" fill="#fff" font-size="29" font-weight="300">--:--</text>
-<text id="sunset" x="272" y="302" text-anchor="middle" fill="#fff" font-size="29" font-weight="300">--:--</text>
-<path d="M200 245 V305" stroke="#aaa" stroke-width="1.5"/>
-<text id="city-name" x="200" y="345" text-anchor="middle" fill="#fff" font-size="25" font-weight="300" letter-spacing="1">A LOCALIZAR</text>
-</svg>
-<div class="status"><span>POSIÇÃO SOLAR</span><span id="sun-status">A CALCULAR</span></div>
-<div class="place" id="country-name">A OBTER LOCALIZAÇÃO</div>
-</main>
+<div class="app">
+<header><div class="brand"><span class="brand-mark">☼</span><span>Relógio Solar <b>PRO</b></span></div><div class="header-actions"><button class="icon-btn" aria-label="Alertas" id="alerts">♧</button><button class="icon-btn" aria-label="Definições" id="settings">⚙</button></div></header>
+<div class="location"><span>●</span><span id="place-label">Cascais, Portugal</span></div>
+<section class="page active" id="page-today">
+<div class="hero">
+<div class="sun-disc"></div>
+<div class="compass">
+<svg viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="174" fill="none" stroke="#e9edf4" stroke-opacity=".82" stroke-width="2"/><path d="M200 26 A174 174 0 1 0 200 374" fill="none" stroke="#ffffff22" stroke-width="6" stroke-linecap="round"/><path id="arc" d="M200 26 A174 174 0 1 0 200 374" fill="none" stroke="#ffd21c" stroke-width="6" stroke-linecap="round" pathLength="100" stroke-dasharray="50 50"/><circle id="sun-glow" cx="200" cy="26" r="17" fill="#ffbd20" opacity=".3"/><circle id="sun-point" cx="200" cy="26" r="7" fill="#ffe34c"/></svg>
+<span class="compass-label north">N</span><span class="compass-label east">E</span><span class="compass-label south">S</span><span class="compass-label west">O</span>
+</div>
+<div class="center-info"><div class="time" id="clock">13:08</div><div class="date" id="date">Quinta, 19 de novembro</div><div class="sun-times"><div class="sun-time"><div class="sun-icon">☼</div><strong id="rise">07:24</strong></div><div class="sun-divider"></div><div class="sun-time"><div class="sun-icon">☼</div><strong id="set">17:23</strong></div></div></div>
+</div>
+<div class="stats">
+<div class="stat"><div class="ico">☼</div><small>Altura Solar</small><strong id="altitude">36,8°</strong></div>
+<div class="stat"><div class="ico">➤</div><small>Azimute</small><strong id="azimuth">192,4°</strong></div>
+<div class="stat"><div class="ico">☀</div><small>Dia do Ano</small><strong id="dayyear">323 / 365</strong></div>
+</div>
+<div class="daylight"><div class="daylight-top"><strong>Luz do Dia</strong><span id="duration">9h 59m</span></div><div class="bar"><span id="daybar"></span></div><div class="daylight-bottom"><span id="elapsed">Decorrido: 5h 44m (57%)</span><span id="remaining">Faltam: 4h 15m</span></div></div>
+<div class="moon-card"><div class="moon-art" id="moon-emoji">🌖</div><div class="moon-copy"><strong>Fases da Lua</strong><span id="moon-phase">Lua Gibosa Minguante</span><span id="moon-light">Iluminação: 72%</span></div><span class="chevron">›</span></div>
+</section>
+<section class="page" id="page-calendar"><h1 class="page-title">Calendário Solar</h1><div class="content-card"><div class="calendar-head"><button class="action" id="prev-month">‹</button><strong id="month-name"></strong><button class="action" id="next-month">›</button></div><div class="calendar-grid" id="calendar"></div></div><div class="content-card"><h3 id="selected-date">Hoje</h3><div class="rowline"><span class="muted">Nascer do sol</span><strong id="cal-rise">--:--</strong></div><div class="rowline"><span class="muted">Pôr do sol</span><strong id="cal-set">--:--</strong></div><div class="rowline"><span class="muted">Duração do dia</span><strong id="cal-length">--</strong></div></div></section>
+<section class="page" id="page-analytics"><h1 class="page-title">Análises</h1><div class="content-card"><h3>Duração da luz ao longo do ano</h3><p class="muted">Variação estimada para a tua localização.</p><div class="chart" id="year-chart"></div><div class="rowline"><span class="muted">Dia mais longo</span><strong id="longest">--</strong></div><div class="rowline"><span class="muted">Dia mais curto</span><strong id="shortest">--</strong></div></div><div class="content-card"><h3>Hoje</h3><div class="rowline"><span class="muted">Luz solar disponível</span><strong id="analytics-length">--</strong></div><div class="rowline"><span class="muted">Percentagem do dia</span><strong id="analytics-percent">--</strong></div></div></section>
+<section class="page" id="page-map"><h1 class="page-title">Mapa e orientação</h1><div class="compass-readout"><svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="88" fill="none" stroke="#aab4c2" stroke-width="1.5"/><path d="M110 13V207 M13 110H207" stroke="#ffffff33"/><text x="110" y="18" text-anchor="middle" fill="white" font-size="12">N</text><text x="110" y="215" text-anchor="middle" fill="white" font-size="12">S</text><text x="9" y="114" fill="white" font-size="12">O</text><text x="201" y="114" fill="white" font-size="12">E</text><path id="direction-arrow" d="M110 35 L119 112 L110 101 L101 112 Z" fill="#ffd21c"/></svg></div><div class="content-card"><div class="rowline"><span class="muted">Localização</span><strong id="map-place">Cascais, Portugal</strong></div><div class="rowline"><span class="muted">Latitude</span><strong id="latitude">38.7050°</strong></div><div class="rowline"><span class="muted">Longitude</span><strong id="longitude">-9.3970°</strong></div><div class="rowline"><span class="muted">Direcção do sol</span><strong id="map-azimuth">--</strong></div><button class="action" id="refresh-location">Actualizar localização</button></div></section>
+<section class="page" id="page-more"><h1 class="page-title">Mais</h1><div class="content-card"><h3>Relógio Solar PRO</h3><p class="muted">A tua luz, o teu lugar e o ritmo do sol.</p><div class="rowline"><span>Localização automática</span><strong id="location-state">Activa</strong></div><div class="rowline"><span>Formato da hora</span><strong>24 horas</strong></div><button class="action" id="more-location">Actualizar localização</button></div><div class="content-card"><h3>Sobre os cálculos</h3><p class="muted">Os horários e a posição solar são estimativas astronómicas calculadas localmente com base na data e nas coordenadas. A fase lunar é uma aproximação.</p></div></section>
+</div>
+<nav>
+<button class="active" data-page="today"><span class="navico">⌂</span>Hoje</button>
+<button data-page="calendar"><span class="navico">▦</span>Calendário</button>
+<button data-page="analytics"><span class="navico">▥</span>Análises</button>
+<button data-page="map"><span class="navico">◎</span>Mapa</button>
+<button data-page="more"><span class="navico">•••</span>Mais</button>
+</nav>
 <script>
 (()=>{
 const $=id=>document.getElementById(id),rad=Math.PI/180;
-let lat=38.705,lon=-9.397,place='ESTORIL',country='PORTUGAL';
-function solar(date,lat,lon){
- const y=date.getFullYear(),m=date.getMonth(),d=date.getDate();
- const N=Math.floor((Date.UTC(y,m,d)-Date.UTC(y,0,0))/86400000),g=2*Math.PI/365*(N-1);
+let lat=38.705,lon=-9.397,place='Cascais',country='Portugal',selectedDate=new Date(),viewMonth=new Date();
+const fmtTime=m=>{m=(Math.round(m)+1440)%1440;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+const duration=m=>Math.floor(m/60)+'h '+String(Math.round(m%60)).padStart(2,'0')+'m';
+function solar(date,la=lat,lo=lon){
+ const day=Math.floor((Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())-Date.UTC(date.getFullYear(),0,0))/86400000),g=2*Math.PI/365*(day-1);
  const eq=229.18*(.000075+.001868*Math.cos(g)-.032077*Math.sin(g)-.014615*Math.cos(2*g)-.040849*Math.sin(2*g));
  const dec=.006918-.399912*Math.cos(g)+.070257*Math.sin(g)-.006758*Math.cos(2*g)+.000907*Math.sin(2*g)-.002697*Math.cos(3*g)+.00148*Math.sin(3*g);
- const c=Math.cos(90.833*rad)/(Math.cos(lat*rad)*Math.cos(dec))-Math.tan(lat*rad)*Math.tan(dec);
- const ha=Math.acos(Math.max(-1,Math.min(1,c))),noon=720-4*lon-eq,offset=-date.getTimezoneOffset();
- const fmt=v=>{let n=(Math.round(v+offset)+1440)%1440;return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')};
- return {rise:noon-4*ha/rad,set:noon+4*ha/rad,fmt};
+ const c=Math.cos(90.833*rad)/(Math.cos(la*rad)*Math.cos(dec))-Math.tan(la*rad)*Math.tan(dec);
+ const ha=Math.acos(Math.max(-1,Math.min(1,c))),noon=720-4*lo-eq,offset=-date.getTimezoneOffset();
+ return {rise:noon-4*ha/rad+offset,set:noon+4*ha/rad+offset,day,declination:dec};
+}
+function solarPosition(date,la=lat,lo=lon){
+ const N=Math.floor((Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())-Date.UTC(date.getFullYear(),0,0))/86400000);
+ const hour=date.getHours()+date.getMinutes()/60+date.getSeconds()/3600;
+ const gamma=2*Math.PI/365*(N-1+(hour-12)/24);
+ const eq=229.18*(.000075+.001868*Math.cos(gamma)-.032077*Math.sin(gamma)-.014615*Math.cos(2*gamma)-.040849*Math.sin(2*gamma));
+ const dec=.006918-.399912*Math.cos(gamma)+.070257*Math.sin(gamma)-.006758*Math.cos(2*gamma)+.000907*Math.sin(2*gamma)-.002697*Math.cos(3*gamma)+.00148*Math.sin(3*gamma);
+ const minutes=hour*60,solarMin=minutes+eq+4*lo-date.getTimezoneOffset(),ha=(solarMin/4-180)*rad,phi=la*rad;
+ const elev=Math.asin(Math.sin(phi)*Math.sin(dec)+Math.cos(phi)*Math.cos(dec)*Math.cos(ha));
+ let az=Math.atan2(Math.sin(ha),Math.cos(ha)*Math.sin(phi)-Math.tan(dec)*Math.cos(phi))/rad+180;
+ return {alt:elev/rad,az:(az+360)%360};
+}
+function moon(date){
+ const known=Date.UTC(2000,0,6,18,14),days=(date.getTime()-known)/86400000,age=((days%29.530588853)+29.530588853)%29.530588853,phase=age/29.530588853,illum=(1-Math.cos(2*Math.PI*phase))/2;
+ const names=['Lua Nova','Lua Crescente','Quarto Crescente','Lua Gibosa Crescente','Lua Cheia','Lua Gibosa Minguante','Quarto Minguante','Lua Minguante'];
+ const idx=Math.round(phase*8)%8,emojis=['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'];
+ return {name:names[idx],emoji:emojis[idx],illum:Math.round(illum*100)};
 }
 function update(){
- const now=new Date(),s=solar(now,lat,lon),mins=now.getHours()*60+now.getMinutes();
- $('clock-time').textContent=now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',hour12:false});
- $('clock-date').textContent=now.toLocaleDateString('pt-PT',{weekday:'short',day:'2-digit',month:'short'}).replace(/\./g,'').toUpperCase();
- $('sunrise').textContent=s.fmt(s.rise);$('sunset').textContent=s.fmt(s.set);
- $('city-name').textContent=place.toLocaleUpperCase('pt-PT');
- $('country-name').textContent=country.toLocaleUpperCase('pt-PT');
- const p=Math.max(0,Math.min(1,(mins-s.rise)/(s.set-s.rise))),a=Math.PI*(1+p),x=200+180*Math.cos(a),y=200+180*Math.sin(a);
- $('sun-dot').setAttribute('cx',x);$('sun-dot').setAttribute('cy',y);$('sun-halo').setAttribute('cx',x);$('sun-halo').setAttribute('cy',y);
- $('solar-progress').setAttribute('stroke-dasharray',(p*100)+' '+(100-p*100));
- $('sun-status').textContent=mins<s.rise?'ANTES DO NASCER DO SOL':mins>s.set?'DEPOIS DO PÔR DO SOL':'DIA · '+Math.round(p*100)+'%';
+ const now=new Date(),s=solar(now),pos=solarPosition(now),mins=now.getHours()*60+now.getMinutes(),len=s.set-s.rise,elapsed=Math.max(0,Math.min(len,mins-s.rise)),pct=len>0?elapsed/len:0;
+ $('clock').textContent=now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',hour12:false});
+ $('date').textContent=now.toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long'});
+ $('rise').textContent=fmtTime(s.rise);$('set').textContent=fmtTime(s.set);
+ $('altitude').textContent=pos.alt.toFixed(1).replace('.',',')+'°';$('azimuth').textContent=pos.az.toFixed(1).replace('.',',')+'°';
+ $('dayyear').textContent=s.day+' / '+(new Date(now.getFullYear(),1,29).getMonth()===1?366:365);
+ $('duration').textContent=duration(len);$('daybar').style.width=(pct*100)+'%';
+ $('elapsed').textContent='Decorrido: '+duration(elapsed)+' ('+Math.round(pct*100)+'%)';$('remaining').textContent='Faltam: '+duration(Math.max(0,s.set-mins));
+ const m=moon(now);$('moon-emoji').textContent=m.emoji;$('moon-phase').textContent=m.name;$('moon-light').textContent='Iluminação: '+m.illum+'%';
+ $('arc').setAttribute('stroke-dasharray',(pct*100)+' '+(100-pct*100));
+ const angle=Math.PI*(1+pct),x=200+174*Math.cos(angle),y=200+174*Math.sin(angle);
+ $('sun-point').setAttribute('cx',x);$('sun-point').setAttribute('cy',y);$('sun-glow').setAttribute('cx',x);$('sun-glow').setAttribute('cy',y);
+ $('direction-arrow').setAttribute('transform','rotate('+pos.az+' 110 110)');
+ $('map-azimuth').textContent=pos.az.toFixed(1).replace('.',',')+'°';
+ $('analytics-length').textContent=duration(len);$('analytics-percent').textContent=Math.round(pct*100)+'%';
+ renderCalendar();renderAnalytics();
 }
 async function locate(){
- if(!navigator.geolocation){$('sun-status').textContent='GPS INDISPONÍVEL';return;}
- $('sun-status').textContent='A OBTER LOCALIZAÇÃO';
- navigator.geolocation.getCurrentPosition(async pos=>{
-   lat=pos.coords.latitude; lon=pos.coords.longitude;
-   try{
-     const url='https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+lon+'&zoom=10&accept-language=pt';
-     const response=await fetch(url);
-     if(response.ok){
-       const data=await response.json(),a=data.address||{};
-       place=a.city||a.town||a.village||a.municipality||a.county||'LOCAL ACTUAL';
-       country=a.country||'';
-     }else{place='LOCAL ACTUAL';country='';}
-   }catch(e){place='LOCAL ACTUAL';country='';}
-   update();
- },err=>{
-   $('sun-status').textContent=err.code===1?'LOCALIZAÇÃO NÃO AUTORIZADA':err.code===2?'LOCALIZAÇÃO INDISPONÍVEL':'LOCALIZAÇÃO SEM RESPOSTA';
- },{enableHighAccuracy:false,timeout:20000,maximumAge:300000});
+ if(!navigator.geolocation){$('location-state').textContent='Indisponível';return;}
+ navigator.geolocation.getCurrentPosition(async p=>{
+  lat=p.coords.latitude;lon=p.coords.longitude;
+  try{const r=await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+lon+'&zoom=10&accept-language=pt');if(r.ok){const a=(await r.json()).address||{};place=a.city||a.town||a.village||a.municipality||a.county||'Local actual';country=a.country||'';}}
+  catch(e){place='Local actual';}
+  const label=place+(country?', '+country:'');$('place-label').textContent=label;$('map-place').textContent=label;$('latitude').textContent=lat.toFixed(4)+'°';$('longitude').textContent=lon.toFixed(4)+'°';$('location-state').textContent='Actualizada';update();
+ },err=>{$('location-state').textContent=err.code===1?'Sem autorização':'Indisponível';},{enableHighAccuracy:false,timeout:15000,maximumAge:300000});
 }
-update();
-locate();
-setInterval(update,60000);
+function renderCalendar(){
+ const y=viewMonth.getFullYear(),m=viewMonth.getMonth(),first=new Date(y,m,1),days=new Date(y,m+1,0).getDate(),offset=(first.getDay()+6)%7;
+ $('month-name').textContent=first.toLocaleDateString('pt-PT',{month:'long',year:'numeric'});
+ const grid=$('calendar');grid.innerHTML='';
+ ['S','T','Q','Q','S','S','D'].forEach(x=>{const e=document.createElement('span');e.textContent=x;e.className='muted';grid.append(e);});
+ for(let i=0;i<offset;i++){const e=document.createElement('span');grid.append(e);}
+ for(let d=1;d<=days;d++){const e=document.createElement('span');e.textContent=d;const dt=new Date(y,m,d);if(dt.toDateString()===new Date().toDateString())e.classList.add('today');if(dt.toDateString()===selectedDate.toDateString())e.classList.add('chosen');e.addEventListener('click',()=>{selectedDate=dt;renderCalendar();const s=solar(dt);$('selected-date').textContent=dt.toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long'});$('cal-rise').textContent=fmtTime(s.rise);$('cal-set').textContent=fmtTime(s.set);$('cal-length').textContent=duration(s.set-s.rise);});grid.append(e);}
+ const s=solar(selectedDate);$('selected-date').textContent=selectedDate.toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long'});$('cal-rise').textContent=fmtTime(s.rise);$('cal-set').textContent=fmtTime(s.set);$('cal-length').textContent=duration(s.set-s.rise);
+}
+function renderAnalytics(){
+ const year=new Date().getFullYear(),vals=[];for(let m=0;m<12;m++){const s=solar(new Date(year,m,15));vals.push(s.set-s.rise);}
+ const min=Math.min(...vals),max=Math.max(...vals),chart=$('year-chart');chart.innerHTML='';vals.forEach(v=>{const bar=document.createElement('i');bar.style.height=(25+((v-min)/(max-min||1))*75)+'%';bar.title=duration(v);chart.append(bar);});
+ $('longest').textContent=duration(max);$('shortest').textContent=duration(min);
+}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('page-'+b.dataset.page).classList.add('active');}));
+$('prev-month').addEventListener('click',()=>{viewMonth.setMonth(viewMonth.getMonth()-1);renderCalendar();});
+$('next-month').addEventListener('click',()=>{viewMonth.setMonth(viewMonth.getMonth()+1);renderCalendar();});
+$('refresh-location').addEventListener('click',locate);$('more-location').addEventListener('click',locate);
+$('settings').addEventListener('click',()=>{document.querySelector('nav [data-page="more"]').click();});
+$('alerts').addEventListener('click',()=>alert('Os alertas solares serão configurados numa próxima versão.'));
+update();locate();setInterval(update,1000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)locate();});
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));}
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
 })();
 </script>
 </body>
