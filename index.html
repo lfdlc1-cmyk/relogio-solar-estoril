@@ -18,7 +18,7 @@ main{width:min(100%,440px);display:flex;flex-direction:column;align-items:center
 svg{width:100%;height:auto;display:block}
 .status{width:86%;display:flex;justify-content:space-between;color:#aaa;font-size:10px;letter-spacing:1.2px;margin-top:3px}
 .place{font-size:11px;letter-spacing:1.5px;color:#999;margin-top:13px}
-#location-button{margin-top:18px;padding:11px 18px;border:1px solid #777;border-radius:24px;background:#111;color:#fff;font:inherit;font-size:11px;letter-spacing:1px;cursor:pointer}#location-button:active{background:#292929}#location-button[hidden]{display:none}
+
 </style>
 </head>
 <body>
@@ -50,7 +50,6 @@ svg{width:100%;height:auto;display:block}
 </svg>
 <div class="status"><span>POSIÇÃO SOLAR</span><span id="sun-status">A CALCULAR</span></div>
 <div class="place" id="country-name">A OBTER LOCALIZAÇÃO</div>
-<button id="location-button" type="button">ATIVAR LOCALIZAÇÃO</button>
 </main>
 <script>
 (()=>{
@@ -79,11 +78,8 @@ function update(){
  $('sun-status').textContent=mins<s.rise?'ANTES DO NASCER DO SOL':mins>s.set?'DEPOIS DO PÔR DO SOL':'DIA · '+Math.round(p*100)+'%';
 }
 async function locate(){
- const button=$('location-button');
- if(!navigator.geolocation){$('sun-status').textContent='GPS INDISPONÍVEL';button.textContent='GPS INDISPONÍVEL';return;}
- button.disabled=true;
- button.textContent='A OBTER LOCALIZAÇÃO…';
- $('sun-status').textContent='A PEDIR LOCALIZAÇÃO';
+ if(!navigator.geolocation){$('sun-status').textContent='GPS INDISPONÍVEL';return;}
+ $('sun-status').textContent='A OBTER LOCALIZAÇÃO';
  navigator.geolocation.getCurrentPosition(async pos=>{
    lat=pos.coords.latitude; lon=pos.coords.longitude;
    try{
@@ -96,17 +92,14 @@ async function locate(){
      }else{place='LOCAL ACTUAL';country='';}
    }catch(e){place='LOCAL ACTUAL';country='';}
    update();
-   button.hidden=true;
  },err=>{
-   $('sun-status').textContent=err.code===1?'PERMISSÃO NEGADA':err.code===2?'LOCALIZAÇÃO INDISPONÍVEL':'TEMPO ESGOTADO';
-   button.disabled=false;
-   button.textContent=err.code===1?'VER DEFINIÇÕES DE LOCALIZAÇÃO':'TENTAR NOVAMENTE';
+   $('sun-status').textContent=err.code===1?'LOCALIZAÇÃO NÃO AUTORIZADA':err.code===2?'LOCALIZAÇÃO INDISPONÍVEL':'LOCALIZAÇÃO SEM RESPOSTA';
  },{enableHighAccuracy:false,timeout:20000,maximumAge:300000});
 }
-$('location-button').addEventListener('click',locate);
 update();
+locate();
 setInterval(update,60000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden && !$('location-button').hidden) $('sun-status').textContent='TOCA PARA ATIVAR A LOCALIZAÇÃO';});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)locate();});
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));}
 })();
 </script>
