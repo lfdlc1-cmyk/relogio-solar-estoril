@@ -51,7 +51,7 @@ footer{height:12px}
 <div class="location"><span>●</span><span id="place-label">Cascais, Portugal</span></div>
 <section class="page active" id="page-today">
 <div class="hero">
-<div class="sun-disc"></div>
+<div class="hero-photo active" id="hero-photo-a"></div><div class="hero-photo" id="hero-photo-b"></div><div class="photo-sun hidden" id="photo-sun"></div>
 <div class="compass">
 <svg viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="174" fill="none" stroke="#e9edf4" stroke-opacity=".82" stroke-width="2"/><path d="M200 26 A174 174 0 1 0 200 374" fill="none" stroke="#ffffff22" stroke-width="6" stroke-linecap="round"/><path id="arc" d="M200 26 A174 174 0 1 0 200 374" fill="none" stroke="#ffd21c" stroke-width="6" stroke-linecap="round" pathLength="100" stroke-dasharray="50 50"/><circle id="sun-glow" cx="200" cy="26" r="17" fill="#ffbd20" opacity=".3"/><circle id="sun-point" cx="200" cy="26" r="7" fill="#ffe34c"/></svg>
 <span class="compass-label north">N</span><span class="compass-label east">E</span><span class="compass-label south">S</span><span class="compass-label west">O</span>
@@ -132,7 +132,8 @@ function updateSky(now,s){
  incoming.classList.add('active');outgoing.classList.remove('active');
  frontSky=next;
 }
-\nfunction update(){
+
+function update(){
  const now=new Date(),s=solar(now),pos=solarPosition(now),mins=now.getHours()*60+now.getMinutes(),len=s.set-s.rise,elapsed=Math.max(0,Math.min(len,mins-s.rise)),pct=len>0?elapsed/len:0;
  updateSky(now,s);
  const sun=$('photo-sun');
@@ -142,7 +143,8 @@ function updateSky(now,s){
   const x=50+Math.sin(pos.az*rad)*38;
   const y=82-Math.max(0,Math.min(90,pos.alt))*0.70;
   sun.style.left=x+'%';sun.style.top=y+'%';
- }\n $('clock').textContent=now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',hour12:false});
+ }
+ $('clock').textContent=now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',hour12:false});
  $('date').textContent=now.toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long'});
  $('rise').textContent=fmtTime(s.rise);$('set').textContent=fmtTime(s.set);
  $('altitude').textContent=pos.alt.toFixed(1).replace('.',',')+'°';$('azimuth').textContent=pos.az.toFixed(1).replace('.',',')+'°';
