@@ -79,7 +79,11 @@ function update(){
  $('sun-status').textContent=mins<s.rise?'ANTES DO NASCER DO SOL':mins>s.set?'DEPOIS DO PÔR DO SOL':'DIA · '+Math.round(p*100)+'%';
 }
 async function locate(){
- if(!navigator.geolocation){$('sun-status').textContent='GPS INDISPONÍVEL';return;}
+ const button=$('location-button');
+ if(!navigator.geolocation){$('sun-status').textContent='GPS INDISPONÍVEL';button.textContent='GPS INDISPONÍVEL';return;}
+ button.disabled=true;
+ button.textContent='A OBTER LOCALIZAÇÃO…';
+ $('sun-status').textContent='A PEDIR LOCALIZAÇÃO';
  navigator.geolocation.getCurrentPosition(async pos=>{
    lat=pos.coords.latitude; lon=pos.coords.longitude;
    try{
@@ -92,10 +96,17 @@ async function locate(){
      }else{place='LOCAL ACTUAL';country='';}
    }catch(e){place='LOCAL ACTUAL';country='';}
    update();
- },()=>{$('sun-status').textContent='AUTORIZA A LOCALIZAÇÃO';},{enableHighAccuracy:false,timeout:15000,maximumAge:300000});
+   button.hidden=true;
+ },err=>{
+   $('sun-status').textContent=err.code===1?'PERMISSÃO NEGADA':err.code===2?'LOCALIZAÇÃO INDISPONÍVEL':'TEMPO ESGOTADO';
+   button.disabled=false;
+   button.textContent=err.code===1?'VER DEFINIÇÕES DE LOCALIZAÇÃO':'TENTAR NOVAMENTE';
+ },{enableHighAccuracy:false,timeout:20000,maximumAge:300000});
 }
-update();locate();setInterval(update,60000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)locate();});
+$('location-button').addEventListener('click',locate);
+update();
+setInterval(update,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden && !$('location-button').hidden) $('sun-status').textContent='TOCA PARA ATIVAR A LOCALIZAÇÃO';});
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));}
 })();
 </script>
