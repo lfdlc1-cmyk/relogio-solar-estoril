@@ -19,8 +19,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:8px
 .brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:600;letter-spacing:-.5px}.brand-mark{color:var(--gold);font-size:30px;line-height:1}
 .header-actions{display:flex;gap:18px}.icon-btn{border:0;background:none;font-size:24px;padding:4px;color:#e9edf4}
 .location{color:#c3cad5;font-size:13px;margin:0 0 8px 38px;display:flex;align-items:center;gap:6px}
-.hero{position:relative;height:clamp(365px,104vw,500px);max-height:500px;overflow:hidden;border-radius:0;margin:0 -16px 14px;background-image:linear-gradient(180deg,rgba(2,6,12,.30) 0%,rgba(2,6,12,.10) 48%,rgba(0,0,0,.42) 100%),url("https://images.unsplash.com/photo-1713528195001-80b36d6e959a?auto=format&fit=crop&w=1200&q=85");background-size:cover;background-position:center 56%}
-.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,5,10,.30),transparent 35%,rgba(0,0,0,.10) 65%,rgba(0,0,0,.58))}
+.hero{position:relative;height:clamp(365px,104vw,500px);max-height:500px;overflow:hidden;border-radius:0;margin:0 -16px 14px;background:#07101d;isolation:isolate}.hero-photo{position:absolute;inset:0;z-index:-1;background-size:cover;background-position:center 55%;opacity:0;transition:opacity 2.4s ease}.hero-photo.active{opacity:1}.hero-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,6,12,.28) 0%,rgba(2,6,12,.04) 42%,rgba(0,0,0,.14) 68%,rgba(0,0,0,.62) 100%)}
+
 .sun-disc{display:none}
 .compass{position:absolute;inset:5% 6% 7%;z-index:1}
 .compass svg{width:100%;height:100%;overflow:visible}
@@ -104,9 +104,32 @@ function moon(date){
  const idx=Math.round(phase*8)%8,emojis=['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'];
  return {name:names[idx],emoji:emojis[idx],illum:Math.round(illum*100)};
 }
-function update(){
+
+const skyPhotos={
+ dawn:'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85',
+ day:'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=85',
+ sunset:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85',
+ night:'https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?auto=format&fit=crop&w=1200&q=85'
+};
+let currentSky='',frontSky='a';
+function updateSky(now,s){
+ const minute=now.getHours()*60+now.getMinutes(),rise=s.rise,set=s.set;
+ let stage;
+ if(minute<rise-50 || minute>set+55) stage='night';
+ else if(minute<rise+85) stage='dawn';
+ else if(minute>set-95) stage='sunset';
+ else stage='day';
+ if(stage===currentSky)return;
+ currentSky=stage;
+ const next=frontSky==='a'?'b':'a';
+ const incoming=$('hero-photo-'+next),outgoing=$('hero-photo-'+frontSky);
+ incoming.style.backgroundImage='url("'+skyPhotos[stage]+'")';
+ incoming.classList.add('active');outgoing.classList.remove('active');
+ frontSky=next;
+}
+\nfunction update(){
  const now=new Date(),s=solar(now),pos=solarPosition(now),mins=now.getHours()*60+now.getMinutes(),len=s.set-s.rise,elapsed=Math.max(0,Math.min(len,mins-s.rise)),pct=len>0?elapsed/len:0;
- $('clock').textContent=now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',hour12:false});
+ updateSky(now,s);\n $('clock').textContent=now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',hour12:false});
  $('date').textContent=now.toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long'});
  $('rise').textContent=fmtTime(s.rise);$('set').textContent=fmtTime(s.set);
  $('altitude').textContent=pos.alt.toFixed(1).replace('.',',')+'°';$('azimuth').textContent=pos.az.toFixed(1).replace('.',',')+'°';
