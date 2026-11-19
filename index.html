@@ -147,8 +147,8 @@ function update(){
  if(sun){
   const visible=pos.alt>-4;
   sun.classList.toggle('hidden',!visible);
-  const x=50+Math.sin(pos.az*rad)*38;
-  const y=82-Math.max(0,Math.min(90,pos.alt))*0.70;
+  const x=Math.max(18,Math.min(82,50+(pos.az-180)*0.55));
+  const y=Math.max(18,Math.min(58,55-Math.max(0,Math.min(90,pos.alt))*0.45));
   sun.style.left=x+'%';sun.style.top=y+'%';
  }
  $('clock').textContent=now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',hour12:false});
@@ -203,7 +203,8 @@ $('moon-open').addEventListener('click',()=>{
 });
 $('moon-close').addEventListener('click',()=>$('moon-modal').hidden=true);
 $('moon-modal').addEventListener('click',e=>{if(e.target===$('moon-modal'))$('moon-modal').hidden=true;});
-\n$('prev-month').addEventListener('click',()=>{viewMonth.setMonth(viewMonth.getMonth()-1);renderCalendar();});
+
+$('prev-month').addEventListener('click',()=>{viewMonth.setMonth(viewMonth.getMonth()-1);renderCalendar();});
 $('next-month').addEventListener('click',()=>{viewMonth.setMonth(viewMonth.getMonth()+1);renderCalendar();});
 $('refresh-location').addEventListener('click',locate);$('more-location').addEventListener('click',locate);
 $('settings').addEventListener('click',()=>{document.querySelector('nav [data-page="more"]').click();});
