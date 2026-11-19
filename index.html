@@ -34,7 +34,14 @@ header{display:flex;align-items:center;justify-content:space-between;padding:8px
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat,.daylight,.moon-card,.content-card{background:linear-gradient(145deg,rgba(31,39,49,.92),rgba(8,13,19,.95));border:1px solid var(--line);border-radius:17px;box-shadow:0 8px 22px #0005}
 .stat{text-align:center;padding:10px 4px 11px}.stat .ico{font-size:22px;color:var(--gold)}.stat small{display:block;color:#d7dbe2;font-size:12px;margin:4px 0 5px}.stat strong{font-size:22px;font-weight:500;font-variant-numeric:tabular-nums}
 .daylight{margin-top:11px;padding:13px 15px}.daylight-top,.daylight-bottom{display:flex;justify-content:space-between;align-items:center}.daylight-top strong{font-size:16px}.daylight-top span{font-weight:600;font-size:17px}.bar{height:15px;border-radius:20px;background:#343d49;margin:12px 0 8px;overflow:hidden}.bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffbd00,#ffda35);border-radius:20px;transition:width .4s}.daylight-bottom{color:#b9c1cc;font-size:12px}
-.moon-card{margin-top:11px;padding:11px;display:flex;align-items:center;gap:13px}.moon-art{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#5e6c7c,#0a1018 68%);font-size:37px}.moon-copy{flex:1}.moon-copy strong{display:block;font-size:16px}.moon-copy span{display:block;color:#d1d6de;font-size:13px;margin-top:5px}.chevron{color:#8993a1;font-size:25px}
+.moon-card{width:100%;margin-top:11px;padding:11px;display:flex;align-items:center;gap:13px;text-align:left;cursor:pointer;color:inherit}
+.modal-backdrop{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.76);backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;padding:18px}
+.modal-backdrop[hidden]{display:none}
+.modal-panel{position:relative;width:min(100%,480px);padding:28px 22px 24px;border:1px solid #ffffff24;border-radius:26px;background:linear-gradient(145deg,#1b2532,#080d14);box-shadow:0 18px 60px #000a;text-align:center}
+.modal-close{position:absolute;right:15px;top:12px;border:0;background:#ffffff16;border-radius:50%;width:36px;height:36px;font-size:27px;line-height:1;color:#fff}
+.modal-moon{font-size:70px;margin:4px 0 8px}.modal-panel h2{font-size:23px;margin:0}.modal-phase{color:#c5ccd6;margin:7px 0 18px}
+.moon-progress{height:10px;background:#394352;border-radius:20px;overflow:hidden;margin:0 0 20px}.moon-progress span{display:block;height:100%;width:72%;background:linear-gradient(90deg,#f5c52a,#fff0a0);border-radius:20px}
+.modal-detail{display:flex;justify-content:space-between;padding:12px 2px;border-bottom:1px solid #ffffff17;font-size:15px}.modal-detail span{color:#aeb8c5}.modal-note{color:#929dab;font-size:12px;margin:17px 0 0}.moon-art{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#5e6c7c,#0a1018 68%);font-size:37px}.moon-copy{flex:1}.moon-copy strong{display:block;font-size:16px}.moon-copy span{display:block;color:#d1d6de;font-size:13px;margin-top:5px}.chevron{color:#8993a1;font-size:25px}
 nav{position:fixed;z-index:10;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);padding:9px 9px calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);background:rgba(5,9,14,.96);border-top:1px solid #ffffff18;backdrop-filter:blur(18px)}
 nav button{border:0;background:none;color:#aeb6c2;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;padding:2px 0}nav button .navico{font-size:22px;line-height:1.1}nav button.active{color:var(--gold)}
 .page{display:none}.page.active{display:block}.page-title{font-size:25px;font-weight:600;margin:12px 3px 16px}.content-card{padding:16px;margin-bottom:12px}.content-card h3{margin:0 0 8px;font-size:16px}.muted{color:var(--muted)}.rowline{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.rowline:last-child{border:0}
@@ -64,8 +71,8 @@ footer{height:12px}
 <div class="stat"><div class="ico">☀</div><small>Dia do Ano</small><strong id="dayyear">323 / 365</strong></div>
 </div>
 <div class="daylight"><div class="daylight-top"><strong>Luz do Dia</strong><span id="duration">9h 59m</span></div><div class="bar"><span id="daybar"></span></div><div class="daylight-bottom"><span id="elapsed">Decorrido: 5h 44m (57%)</span><span id="remaining">Faltam: 4h 15m</span></div></div>
-<div class="moon-card"><div class="moon-art" id="moon-emoji">🌖</div><div class="moon-copy"><strong>Fases da Lua</strong><span id="moon-phase">Lua Gibosa Minguante</span><span id="moon-light">Iluminação: 72%</span></div><span class="chevron">›</span></div>
-</section>
+<button class="moon-card" id="moon-open" type="button" aria-label="Ver detalhes das fases da Lua"><div class="moon-art" id="moon-emoji">🌖</div><div class="moon-copy"><strong>Fases da Lua</strong><span id="moon-phase">Lua Gibosa Minguante</span><span id="moon-light">Iluminação: 72%</span></div><span class="chevron">›</span></button>
+<div class="modal-backdrop" id="moon-modal" hidden><div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="moon-modal-title"><button class="modal-close" id="moon-close" type="button" aria-label="Fechar">×</button><div class="modal-moon" id="moon-modal-emoji">🌖</div><h2 id="moon-modal-title">Fases da Lua</h2><p class="modal-phase" id="moon-modal-phase">Lua Gibosa</p><div class="moon-progress"><span id="moon-progress-fill"></span></div><div class="modal-detail"><span>Iluminação</span><strong id="moon-modal-light">72%</strong></div><div class="modal-detail"><span>Idade da Lua</span><strong id="moon-modal-age">--</strong></div><div class="modal-detail"><span>Próxima Lua Cheia</span><strong id="moon-next-full">--</strong></div><div class="modal-detail"><span>Próxima Lua Nova</span><strong id="moon-next-new">--</strong></div><p class="modal-note">Valores aproximados calculados a partir do ciclo lunar.</p></div></div></section>
 <section class="page" id="page-calendar"><h1 class="page-title">Calendário Solar</h1><div class="content-card"><div class="calendar-head"><button class="action" id="prev-month">‹</button><strong id="month-name"></strong><button class="action" id="next-month">›</button></div><div class="calendar-grid" id="calendar"></div></div><div class="content-card"><h3 id="selected-date">Hoje</h3><div class="rowline"><span class="muted">Nascer do sol</span><strong id="cal-rise">--:--</strong></div><div class="rowline"><span class="muted">Pôr do sol</span><strong id="cal-set">--:--</strong></div><div class="rowline"><span class="muted">Duração do dia</span><strong id="cal-length">--</strong></div></div></section>
 <section class="page" id="page-analytics"><h1 class="page-title">Análises</h1><div class="content-card"><h3>Duração da luz ao longo do ano</h3><p class="muted">Variação estimada para a tua localização.</p><div class="chart" id="year-chart"></div><div class="rowline"><span class="muted">Dia mais longo</span><strong id="longest">--</strong></div><div class="rowline"><span class="muted">Dia mais curto</span><strong id="shortest">--</strong></div></div><div class="content-card"><h3>Hoje</h3><div class="rowline"><span class="muted">Luz solar disponível</span><strong id="analytics-length">--</strong></div><div class="rowline"><span class="muted">Percentagem do dia</span><strong id="analytics-percent">--</strong></div></div></section>
 <section class="page" id="page-map"><h1 class="page-title">Mapa e orientação</h1><div class="compass-readout"><svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="88" fill="none" stroke="#aab4c2" stroke-width="1.5"/><path d="M110 13V207 M13 110H207" stroke="#ffffff33"/><text x="110" y="18" text-anchor="middle" fill="white" font-size="12">N</text><text x="110" y="215" text-anchor="middle" fill="white" font-size="12">S</text><text x="9" y="114" fill="white" font-size="12">O</text><text x="201" y="114" fill="white" font-size="12">E</text><path id="direction-arrow" d="M110 35 L119 112 L110 101 L101 112 Z" fill="#ffd21c"/></svg></div><div class="content-card"><div class="rowline"><span class="muted">Localização</span><strong id="map-place">Cascais, Portugal</strong></div><div class="rowline"><span class="muted">Latitude</span><strong id="latitude">38.7050°</strong></div><div class="rowline"><span class="muted">Longitude</span><strong id="longitude">-9.3970°</strong></div><div class="rowline"><span class="muted">Direcção do sol</span><strong id="map-azimuth">--</strong></div><button class="action" id="refresh-location">Actualizar localização</button></div></section>
@@ -107,7 +114,7 @@ function moon(date){
  const known=Date.UTC(2000,0,6,18,14),days=(date.getTime()-known)/86400000,age=((days%29.530588853)+29.530588853)%29.530588853,phase=age/29.530588853,illum=(1-Math.cos(2*Math.PI*phase))/2;
  const names=['Lua Nova','Lua Crescente','Quarto Crescente','Lua Gibosa Crescente','Lua Cheia','Lua Gibosa Minguante','Quarto Minguante','Lua Minguante'];
  const idx=Math.round(phase*8)%8,emojis=['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'];
- return {name:names[idx],emoji:emojis[idx],illum:Math.round(illum*100)};
+ return {name:names[idx],emoji:emojis[idx],illum:Math.round(illum*100),age:age,phase:phase};
 }
 
 const skyPhotos={
@@ -184,7 +191,19 @@ function renderAnalytics(){
  $('longest').textContent=duration(max);$('shortest').textContent=duration(min);
 }
 document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('page-'+b.dataset.page).classList.add('active');}));
-$('prev-month').addEventListener('click',()=>{viewMonth.setMonth(viewMonth.getMonth()-1);renderCalendar();});
+$('moon-open').addEventListener('click',()=>{
+ const m=moon(new Date()),age=m.age,cycle=29.530588853;
+ const toFull=(cycle*0.5-age+cycle)%cycle,toNew=(cycle-age)%cycle;
+ $('moon-modal-emoji').textContent=m.emoji;$('moon-modal-phase').textContent=m.name;
+ $('moon-modal-light').textContent=m.illum+'%';$('moon-progress-fill').style.width=m.illum+'%';
+ $('moon-modal-age').textContent=age.toFixed(1).replace('.',',')+' dias';
+ $('moon-next-full').textContent='Dentro de '+toFull.toFixed(1).replace('.',',')+' dias';
+ $('moon-next-new').textContent='Dentro de '+toNew.toFixed(1).replace('.',',')+' dias';
+ $('moon-modal').hidden=false;
+});
+$('moon-close').addEventListener('click',()=>$('moon-modal').hidden=true);
+$('moon-modal').addEventListener('click',e=>{if(e.target===$('moon-modal'))$('moon-modal').hidden=true;});
+\n$('prev-month').addEventListener('click',()=>{viewMonth.setMonth(viewMonth.getMonth()-1);renderCalendar();});
 $('next-month').addEventListener('click',()=>{viewMonth.setMonth(viewMonth.getMonth()+1);renderCalendar();});
 $('refresh-location').addEventListener('click',locate);$('more-location').addEventListener('click',locate);
 $('settings').addEventListener('click',()=>{document.querySelector('nav [data-page="more"]').click();});
