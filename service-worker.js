@@ -1,5 +1,5 @@
-const CACHE = "relogio-solar-estoril-v1";
-const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon.svg"];
+const CACHE = "relogio-solar-estoril-v2";
+const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon.svg", "./apple-touch-icon.png"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)));
   self.skipWaiting();
